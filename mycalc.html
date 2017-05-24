@@ -7,7 +7,7 @@
   </head>
   <body>
     <div id="input1"></div>
-    <div id="input2">0</div>
+    <div id="input2"></div>
     <div>
       <button class="number">1</button>
       <button class="number">2</button>
@@ -43,7 +43,7 @@
       <button class="operand">**</button>
       <button class="operand">=</button>
       <button class="clear_all">c</button>
-      <p id="last_btn" style ="display: none;"></p>
+      <p id="last_btn" class="" style="display: none;"></p>
     </div>
   </body>
   <style type="text/css">
@@ -58,25 +58,24 @@
   <script type="text/javascript">
     $(".operand").on('click',function(){
       var operand = $(this).html();
-      if (document.getElementById('last_btn').innerHTML != operand) {
+      var last_btn_value = document.getElementById('last_btn').innerHTML;
+      var last_btn_class = $('#last_btn').attr("class");
+      if (last_btn_value != operand) {
+        if ((last_btn_class == "number") || (last_btn_class == "pi")) {
+          document.getElementById('input1').innerHTML += document.getElementById('input2').innerHTML;
+        }
         var equation = document.getElementById('input1').innerHTML;
-        var equation = equation.replace(/sind/g,"Math.sin");
-        var equation = equation.replace(/cosd/g,"Math.cos");
-        var equation = equation.replace(/tand/g,"Math.tan");
-        var equation = equation.replace(/sin-1d/g,"Math.asin");
-        var equation = equation.replace(/cos-1d/g,"Math.acos");
-        var equation = equation.replace(/tan-1d/g,"Math.atan");
-        var equation = equation.replace(/sinhd/g,"Math.sinh");
-        var equation = equation.replace(/coshd/g,"Math.cosh");
-        var equation = equation.replace(/tanhd/g,"Math.tanh");
-        var equation = equation.replace(/sinh-1d/g,"Math.asinh");
-        var equation = equation.replace(/cosh-1d/g,"Math.acosh");
-        var equation = equation.replace(/tanh-1d/g,"Math.atanh");
+        var equation = modify(equation);
+        if ( ($('#last_btn').attr("class") == "operand") && (operand != "=" ) ) {
+          document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0, -1);
+        }
+
 
         document.getElementById('input2').innerHTML = eval(equation);
-        if (document.getElementById('last_btn').innerHTML == "=") {
+        if (last_btn_value == "=") {
           document.getElementById('input1').innerHTML = document.getElementById('input2').innerHTML;
-        }      
+        }
+
         if (operand != "=" ) {
           document.getElementById('input1').innerHTML += operand;
         }
@@ -87,27 +86,38 @@
         document.getElementById('input1').innerHTML = "";
         document.getElementById('input2').innerHTML = "0";
       }
-      document.getElementById('input1').innerHTML += $(this).html();
+      if ($('#last_btn').attr("class") == "number") {
+        document.getElementById('input2').innerHTML += $(this).html();
+      } else {
+        document.getElementById('input2').innerHTML = $(this).html();        
+      }
     });
     $(".pi").on('click',function(){
-      if (document.getElementById('last_btn').innerHTML != "π") {
-        if (document.getElementById('last_btn').innerHTML == "=") {
+      var last_btn_value = document.getElementById('last_btn').innerHTML;
+      var last_btn_class = $('#last_btn').attr("class");
+      if (last_btn_value != "π") {
+        if ((last_btn_value == "=") || ( (last_btn_class != "operand") && (last_btn_class != "number") )) {
           document.getElementById('input1').innerHTML = "";
           document.getElementById('input2').innerHTML = "0";
         }
-        document.getElementById('input1').innerHTML += Math.PI;
+        document.getElementById('input2').innerHTML = Math.PI;
       }
     });
     var arr = [".sin",".cos",".tan",".sin-1",".cos-1",".tan-1",".sinh",".cosh",".tanh",".sinh-1",".cosh-1",".tanh-1"]
     var sel = arr.join(", ")
     $(sel).on('click',function(){
-      if (document.getElementById('last_btn').innerHTML == "=") {
+      var last_btn_value = document.getElementById('last_btn').innerHTML;
+      var last_btn_class = $('#last_btn').attr("class");
+      if (last_btn_value == "=") {
         document.getElementById('input1').innerHTML = document.getElementById('input2').innerHTML;
       }
       var equation = document.getElementById('input1').innerHTML;
       var rep_array = equation.split(/[-*//%+--/]/);
-      console.log(rep_array);
       var rep = rep_array[rep_array.length - 1];
+      if (rep == "") {
+        rep = document.getElementById('input2').innerHTML;
+        equation += document.getElementById('input2').innerHTML;
+      }
       switch ($(this).attr("class")) {
         case "sin":
           var fnctn = "sind(";
@@ -119,13 +129,13 @@
           var fnctn = "tand(";
           break;
         case "sin-1":
-          var fnctn = "sin-1d(";
+          var fnctn = "sininvd(";
           break;
         case "cos-1":
-          var fnctn = "cos-1d(";
+          var fnctn = "cosinvd(";
           break;
         case "tan-1":
-          var fnctn = "tan-1d(";
+          var fnctn = "taninvd(";
           break;
         case "sinh":
           var fnctn = "sinhd(";
@@ -137,16 +147,19 @@
           var fnctn = "tanhd(";
           break;
         case "sinh-1":
-          var fnctn = "sinh-1d(";
+          var fnctn = "sinhinvd(";
           break;
         case "cosh-1":
-          var fnctn = "cosh-1d(";
+          var fnctn = "coshinvd(";
           break;
         case "tanh-1":
-          var fnctn = "tanh-1d(";
+          var fnctn = "tanhinvd(";
       }
       var equation = equation.slice(0,(equation.length - rep.length)) + fnctn + equation.slice(equation.length-rep.length) + ")";
-      console.log(equation);
+      var input2_eq = fnctn + rep + ")";
+      var input2_eq = modify(input2_eq);
+      console.log(input2_eq);
+      document.getElementById('input2').innerHTML = eval(input2_eq);
       document.getElementById('input1').innerHTML = equation;
     });
     $(".clear_all").on('click',function(){
@@ -155,7 +168,25 @@
     });
     $("button").on('click',function(){
       val = $(this).html();
+      clss = $(this).attr("class");
       document.getElementById('last_btn').innerHTML = val;
+      $('#last_btn').attr("class",clss);
     });
+
+    function modify(equation) {
+      var equation = equation.replace(/sind/g,"Math.sin");
+      var equation = equation.replace(/cosd/g,"Math.cos");
+      var equation = equation.replace(/tand/g,"Math.tan");
+      var equation = equation.replace(/sininvd/g,"Math.asin");
+      var equation = equation.replace(/cosinvd/g,"Math.acos");
+      var equation = equation.replace(/taninvd/g,"Math.atan");
+      var equation = equation.replace(/sinhd/g,"Math.sinh");
+      var equation = equation.replace(/coshd/g,"Math.cosh");
+      var equation = equation.replace(/tanhd/g,"Math.tanh");
+      var equation = equation.replace(/sinhinvd/g,"Math.asinh");
+      var equation = equation.replace(/coshinvd/g,"Math.acosh");
+      var equation = equation.replace(/tanhinvd/g,"Math.atanh");
+      return equation;
+    }
   </script>
 </html>
