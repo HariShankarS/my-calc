@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <title>My Scientific Calculator</title>
+  </head>
+  <body>
+    <div id="input1"></div>
+    <div id="input2">0</div>
+    <div>
+      <button class="number">1</button>
+      <button class="number">2</button>
+      <button class="number">3</button><br>
+      <button class="number">4</button>
+      <button class="number">5</button>
+      <button class="number">6</button><br>
+      <button class="number">7</button>
+      <button class="number">8</button>
+      <button class="number">9</button><br>
+      <button class="number">0</button>
+      <button class="number">.</button>
+      <button class="operand">-</button><br>
+      <button class="operand">+</button>
+      <button class="operand">/</button>
+      <button class="operand">%</button><br>
+      <button class="operand">*</button>
+      <button>(</button>
+      <button>)</button>
+      <button class="pi">&#960;</button><br>
+      <button class="sin">sin</button>
+      <button class="cos">cos</button>
+      <button class="tan">tan</button><br>
+      <button class="sin-1">sin<sup>-1</sup></button>
+      <button class="cos-1">cos<sup>-1</sup></button>
+      <button class="tan-1">tan<sup>-1</sup></button><br>
+      <button class="sinh">sinh</button>
+      <button class="cosh">cosh</button>
+      <button class="tanh">tanh</button><br>
+      <button class="sinh-1">sinh<sup>-1</sup></button>
+      <button class="cosh-1">cosh<sup>-1</sup></button>
+      <button class="tanh-1">tanh<sup>-1</sup></button><br>
+      <button class="operand">**</button>
+      <button class="operand">=</button>
+      <button class="clear_all">c</button>
+      <p id="last_btn" style ="display: none;"></p>
+    </div>
+  </body>
+  <style type="text/css">
+    #input1, #input2 {
+      width: 20%;
+      min-height: 20px;
+      text-align: right;
+      border: 1px solid black;
+      margin-bottom: 3px;
+    }
+  </style>
+  <script type="text/javascript">
+    $(".operand").on('click',function(){
+      var operand = $(this).html();
+      if (document.getElementById('last_btn').innerHTML != operand) {
+        var equation = document.getElementById('input1').innerHTML;
+        var equation = equation.replace(/sind/g,"Math.sin");
+        var equation = equation.replace(/cosd/g,"Math.cos");
+        var equation = equation.replace(/tand/g,"Math.tan");
+        var equation = equation.replace(/sin-1d/g,"Math.asin");
+        var equation = equation.replace(/cos-1d/g,"Math.acos");
+        var equation = equation.replace(/tan-1d/g,"Math.atan");
+        var equation = equation.replace(/sinhd/g,"Math.sinh");
+        var equation = equation.replace(/coshd/g,"Math.cosh");
+        var equation = equation.replace(/tanhd/g,"Math.tanh");
+        var equation = equation.replace(/sinh-1d/g,"Math.asinh");
+        var equation = equation.replace(/cosh-1d/g,"Math.acosh");
+        var equation = equation.replace(/tanh-1d/g,"Math.atanh");
+
+        document.getElementById('input2').innerHTML = eval(equation);
+        if (document.getElementById('last_btn').innerHTML == "=") {
+          document.getElementById('input1').innerHTML = document.getElementById('input2').innerHTML;
+        }      
+        if (operand != "=" ) {
+          document.getElementById('input1').innerHTML += operand;
+        }
+      }
+    });
+    $(".number").on('click',function(){
+      if (document.getElementById('last_btn').innerHTML == "=") {
+        document.getElementById('input1').innerHTML = "";
+        document.getElementById('input2').innerHTML = "0";
+      }
+      document.getElementById('input1').innerHTML += $(this).html();
+    });
+    $(".pi").on('click',function(){
+      if (document.getElementById('last_btn').innerHTML != "π") {
+        if (document.getElementById('last_btn').innerHTML == "=") {
+          document.getElementById('input1').innerHTML = "";
+          document.getElementById('input2').innerHTML = "0";
+        }
+        document.getElementById('input1').innerHTML += Math.PI;
+      }
+    });
+    var arr = [".sin",".cos",".tan",".sin-1",".cos-1",".tan-1",".sinh",".cosh",".tanh",".sinh-1",".cosh-1",".tanh-1"]
+    var sel = arr.join(", ")
+    $(sel).on('click',function(){
+      if (document.getElementById('last_btn').innerHTML == "=") {
+        document.getElementById('input1').innerHTML = document.getElementById('input2').innerHTML;
+      }
+      var equation = document.getElementById('input1').innerHTML;
+      var rep_array = equation.split(/[-*//%+--/]/);
+      console.log(rep_array);
+      var rep = rep_array[rep_array.length - 1];
+      switch ($(this).attr("class")) {
+        case "sin":
+          var fnctn = "sind(";
+          break;
+        case "cos":
+          var fnctn = "cosd(";
+          break;
+        case "tan":
+          var fnctn = "tand(";
+          break;
+        case "sin-1":
+          var fnctn = "sin-1d(";
+          break;
+        case "cos-1":
+          var fnctn = "cos-1d(";
+          break;
+        case "tan-1":
+          var fnctn = "tan-1d(";
+          break;
+        case "sinh":
+          var fnctn = "sinhd(";
+          break;
+        case "cosh":
+          var fnctn = "coshd(";
+          break;
+        case "tanh":
+          var fnctn = "tanhd(";
+          break;
+        case "sinh-1":
+          var fnctn = "sinh-1d(";
+          break;
+        case "cosh-1":
+          var fnctn = "cosh-1d(";
+          break;
+        case "tanh-1":
+          var fnctn = "tanh-1d(";
+      }
+      var equation = equation.slice(0,(equation.length - rep.length)) + fnctn + equation.slice(equation.length-rep.length) + ")";
+      console.log(equation);
+      document.getElementById('input1').innerHTML = equation;
+    });
+    $(".clear_all").on('click',function(){
+      document.getElementById('input1').innerHTML = "";
+      document.getElementById('input2').innerHTML = "0";
+    });
+    $("button").on('click',function(){
+      val = $(this).html();
+      document.getElementById('last_btn').innerHTML = val;
+    });
+  </script>
+</html>
