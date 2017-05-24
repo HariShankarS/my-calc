@@ -26,8 +26,9 @@
       <button class="operand">%</button><br>
       <button class="operand">*</button>
       <button>(</button>
-      <button>)</button>
-      <button class="pi">&#960;</button><br>
+      <button>)</button><br>
+      <button class="pi">&#960;</button>
+      <button class="e">e</button><br>
       <button class="sin">sin</button>
       <button class="cos">cos</button>
       <button class="tan">tan</button><br>
@@ -61,15 +62,15 @@
       var last_btn_value = document.getElementById('last_btn').innerHTML;
       var last_btn_class = $('#last_btn').attr("class");
       if (last_btn_value != operand) {
-        if ((last_btn_class == "number") || (last_btn_class == "pi")) {
+        if ((last_btn_class == "number") || (last_btn_class == "pi") || (last_btn_class == "e")) {
           document.getElementById('input1').innerHTML += document.getElementById('input2').innerHTML;
         }
+
         var equation = document.getElementById('input1').innerHTML;
         var equation = modify(equation);
         if ( ($('#last_btn').attr("class") == "operand") && (operand != "=" ) ) {
           document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0, -1);
         }
-
 
         document.getElementById('input2').innerHTML = eval(equation);
         if (last_btn_value == "=") {
@@ -101,6 +102,17 @@
           document.getElementById('input2').innerHTML = "0";
         }
         document.getElementById('input2').innerHTML = Math.PI;
+      }
+    });
+    $(".e").on('click',function(){
+      var last_btn_value = document.getElementById('last_btn').innerHTML;
+      var last_btn_class = $('#last_btn').attr("class");
+      if (last_btn_value != "e") {
+        if ((last_btn_value == "=") || ( (last_btn_class != "operand") && (last_btn_class != "number") )) {
+          document.getElementById('input1').innerHTML = "";
+          document.getElementById('input2').innerHTML = "0";
+        }
+        document.getElementById('input2').innerHTML = Math.exp(1);
       }
     });
     var arr = [".sin",".cos",".tan",".sin-1",".cos-1",".tan-1",".sinh",".cosh",".tanh",".sinh-1",".cosh-1",".tanh-1"]
@@ -158,7 +170,6 @@
       var equation = equation.slice(0,(equation.length - rep.length)) + fnctn + equation.slice(equation.length-rep.length) + ")";
       var input2_eq = fnctn + rep + ")";
       var input2_eq = modify(input2_eq);
-      console.log(input2_eq);
       document.getElementById('input2').innerHTML = eval(input2_eq);
       document.getElementById('input1').innerHTML = equation;
     });
