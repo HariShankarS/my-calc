@@ -34,7 +34,7 @@
       <button class="cube">x<sup>3</sup></button>
       <button class="sqr">x<sup>2</sup></button><br>
       <button class="e">e</button>
-      <button class="operand root"><sup>y</sup>&#8730;x</button><br>
+      <button class="operand"><sup>y</sup>&#8730;x</button><br>
       <button class="sin">sin</button>
       <button class="cos">cos</button>
       <button class="tan">tan</button><br>
@@ -72,7 +72,7 @@
         } //adding input2 to input 1 if last button is a num or pi or e
 
         var equation = document.getElementById('input1').innerHTML;
-        if ((operand == "=") && ((last_btn_class == "operand") || (last_btn_class == "operand root"))) {
+        if ((operand == "=") && (last_btn_class == "operand")) {
           var rep_array = equation.split(/[-*-^-yroot//%+--/]/); // splitting the equation wherever there is a opernad
           var rep = rep_array[rep_array.length - 1];
           if (rep == "") {
@@ -83,7 +83,7 @@
 
         }
 
-        if ( ( (last_btn_class == "operand") || (last_btn_class == "operand root") ) && (operand != "=" ) ) {
+        if ( ( last_btn_class == "operand" ) && (operand != "=" ) ) {
           if (last_btn_class == "operand") {
           document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0, -1);
           } else {
@@ -99,20 +99,16 @@
           document.getElementById('input1').innerHTML = document.getElementById('input2').innerHTML;
         } // aading result to input1 and then adding operand
 
-        if ((operand != "=" ) && ( $(this).attr("class") != "operand root")) {
-          document.getElementById('input1').innerHTML += operand.replace("x<sup>y</sup>","^");
+        if (operand != "=" ) {
+          document.getElementById('input1').innerHTML += operand.replace("x<sup>y</sup>","^").replace("<sup>y</sup>√x","yroot");
         } // adding operand beside input
-
-        if ($(this).attr("class") == "operand root") {
-          document.getElementById('input1').innerHTML += "yroot";
-        } //adding y root
 
       }
     });
     $(".number").on('click',function(){
       var last_btn_value = document.getElementById('last_btn').innerHTML;
       var last_btn_class = $('#last_btn').attr("class");
-      if ((last_btn_value == "=") || ( (last_btn_class != "operand") && (last_btn_class != "number") && (last_btn_class != "operand root") )) {
+      if ((last_btn_value == "=") || ( (last_btn_class != "operand") && (last_btn_class != "number") )) {
         document.getElementById('input1').innerHTML = "";
         document.getElementById('input2').innerHTML = "0";
       } // clearing fields if completed, or if last button is a function
