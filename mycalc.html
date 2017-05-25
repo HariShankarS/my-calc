@@ -28,7 +28,13 @@
       <button>(</button>
       <button>)</button><br>
       <button class="pi">&#960;</button>
-      <button class="e">e</button><br>
+      <button class="e">e</button>
+      <button class="fact">n!</button><br>
+      <button class="operand">x<sup>y</sup></button>
+      <button class="cube">x<sup>3</sup></button>
+      <button class="sqr">x<sup>2</sup></button><br>
+      <button class="e">e</button>
+      <button class="operand root"><sup>y</sup>&#8730;x</button><br>
       <button class="sin">sin</button>
       <button class="cos">cos</button>
       <button class="tan">tan</button><br>
@@ -41,7 +47,6 @@
       <button class="sinh-1">sinh<sup>-1</sup></button>
       <button class="cosh-1">cosh<sup>-1</sup></button>
       <button class="tanh-1">tanh<sup>-1</sup></button><br>
-      <button class="operand">**</button>
       <button class="operand">=</button>
       <button class="clear_all">c</button>
       <p id="last_btn" class="" style="display: none;"></p>
@@ -64,34 +69,61 @@
       if (last_btn_value != operand) {
         if ((last_btn_class == "number") || (last_btn_class == "pi") || (last_btn_class == "e")) {
           document.getElementById('input1').innerHTML += document.getElementById('input2').innerHTML;
-        }
+        } //adding input2 to input 1 if last button is a num or pi or e
 
         var equation = document.getElementById('input1').innerHTML;
-        var equation = modify(equation);
-        if ( ($('#last_btn').attr("class") == "operand") && (operand != "=" ) ) {
-          document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0, -1);
+        if ((operand == "=") && ((last_btn_class == "operand") || (last_btn_class == "operand root"))) {
+          var rep_array = equation.split(/[-*-^-yroot//%+--/]/); // splitting the equation wherever there is a opernad
+          var rep = rep_array[rep_array.length - 1];
+          if (rep == "") {
+            rep = document.getElementById('input2').innerHTML;
+            equation += document.getElementById('input2').innerHTML;
+            document.getElementById('input1').innerHTML += document.getElementById('input2').innerHTML;
+          } // if one is calling the function on the previous value in the input2 field
+
         }
 
-        document.getElementById('input2').innerHTML = eval(equation);
+        if ( ( (last_btn_class == "operand") || (last_btn_class == "operand root") ) && (operand != "=" ) ) {
+          if (last_btn_class == "operand") {
+          document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0, -1);
+          } else {
+            document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0, -5);          
+          }
+        } else {
+          var equation = modify(equation);
+          document.getElementById('input2').innerHTML = eval(equation);
+        }  // to cut the old operand and add new one
+
+
         if (last_btn_value == "=") {
           document.getElementById('input1').innerHTML = document.getElementById('input2').innerHTML;
-        }
+        } // aading result to input1 and then adding operand
 
-        if (operand != "=" ) {
-          document.getElementById('input1').innerHTML += operand;
-        }
+        if ((operand != "=" ) && ( $(this).attr("class") != "operand root")) {
+          document.getElementById('input1').innerHTML += operand.replace("x<sup>y</sup>","^");
+        } // adding operand beside input
+
+        if ($(this).attr("class") == "operand root") {
+          document.getElementById('input1').innerHTML += "yroot";
+        } //adding y root
+
       }
     });
     $(".number").on('click',function(){
-      if (document.getElementById('last_btn').innerHTML == "=") {
+      var last_btn_value = document.getElementById('last_btn').innerHTML;
+      var last_btn_class = $('#last_btn').attr("class");
+      if ((last_btn_value == "=") || ( (last_btn_class != "operand") && (last_btn_class != "number") && (last_btn_class != "operand root") )) {
         document.getElementById('input1').innerHTML = "";
         document.getElementById('input2').innerHTML = "0";
-      }
+      } // clearing fields if completed, or if last button is a function
+
       if ($('#last_btn').attr("class") == "number") {
         document.getElementById('input2').innerHTML += $(this).html();
       } else {
         document.getElementById('input2').innerHTML = $(this).html();        
       }
+      // adding number to the previous number or else replacing
+
     });
     $(".pi").on('click',function(){
       var last_btn_value = document.getElementById('last_btn').innerHTML;
@@ -115,21 +147,25 @@
         document.getElementById('input2').innerHTML = Math.exp(1);
       }
     });
-    var arr = [".sin",".cos",".tan",".sin-1",".cos-1",".tan-1",".sinh",".cosh",".tanh",".sinh-1",".cosh-1",".tanh-1"]
-    var sel = arr.join(", ")
+    //pi and e are similar to number
+
+    var arr = [".sin",".cos",".tan",".sin-1",".cos-1",".tan-1",".sinh",".cosh",".tanh",".sinh-1",".cosh-1",".tanh-1",".fact",".cube",".sqr"]
+    var sel = arr.join(", ");
     $(sel).on('click',function(){
       var last_btn_value = document.getElementById('last_btn').innerHTML;
       var last_btn_class = $('#last_btn').attr("class");
       if (last_btn_value == "=") {
         document.getElementById('input1').innerHTML = document.getElementById('input2').innerHTML;
-      }
+      } // if one wanted call method on the previous result
+
       var equation = document.getElementById('input1').innerHTML;
-      var rep_array = equation.split(/[-*//%+--/]/);
+      var rep_array = equation.split(/\+|\%|\-|\/|\*|\^|yroot/); // splitting the equation wherever there is a opernad
       var rep = rep_array[rep_array.length - 1];
       if (rep == "") {
         rep = document.getElementById('input2').innerHTML;
         equation += document.getElementById('input2').innerHTML;
-      }
+      } // if one is calling the function on the previous value in the input2 field
+
       switch ($(this).attr("class")) {
         case "sin":
           var fnctn = "sind(";
@@ -166,6 +202,15 @@
           break;
         case "tanh-1":
           var fnctn = "tanhinvd(";
+          break;
+        case "fact":
+          var fnctn = "fact(";
+          break;
+        case "cube":
+          var fnctn = "cube(";
+          break;
+        case "sqr":
+          var fnctn = "sqr(";
       }
       var equation = equation.slice(0,(equation.length - rep.length)) + fnctn + equation.slice(equation.length-rep.length) + ")";
       var input2_eq = fnctn + rep + ")";
@@ -197,7 +242,53 @@
       var equation = equation.replace(/sinhinvd/g,"Math.asinh");
       var equation = equation.replace(/coshinvd/g,"Math.acosh");
       var equation = equation.replace(/tanhinvd/g,"Math.atanh");
+      var equation = equation.replace(/\^/g,"**");
+      if (equation.indexOf('yroot') > -1 ) {
+        var equation = yrootfn(equation);
+      }
       return equation;
     }
+
+    function fact(number) {
+      if (number == 0) {
+        return 1;
+      }
+      return number * fact(number-1);
+    }
+
+    function cube(number) {
+      return Math.pow(number,3);
+    }
+
+    function sqr(number) {
+      return Math.pow(number,2);
+    }
+
+    function yrootfn(equation) {
+      eq = equation.split(/\+|\%|\-|\/|\*|\^/);
+      eq.forEach(function(a){
+        if (a.indexOf("yroot") > -1) {
+          if ( ((a.match(/yroot/g) || []).length) < 2) {
+            front_value = a.split('yroot')[0];
+            back_value = 1/(parseFloat(a.split('yroot')[1]));
+            retrn = front_value + "**" + back_value;
+            equation = equation.replace(a,retrn);
+          } else {
+            arry = a.split('yroot');
+            arry.forEach(function(n,i) {
+              if ( i == 0 ) {
+                val = parseFloat(n);
+              }
+              if ( i != (arry.length - 1) ) {
+                val = val**(1/(parseFloat(arry[i+1])))
+              }
+            });
+            equation = equation.replace(a,val);
+          }
+        }
+      });
+      return equation;
+    }
+
   </script>
 </html>
