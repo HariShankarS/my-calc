@@ -7,7 +7,7 @@
   </head>
   <body>
     <div id="input1"></div>
-    <div id="input2"></div>
+    <div id="input2">0</div>
     <div>
       <button type="" class="number">1</button>
       <button type="" class="number">2</button>
@@ -20,22 +20,28 @@
       <button type="" class="number">9</button><br>
       <button type="" class="number">0</button>
       <button type="" class="number">.</button>
-      <button type="" class="operand">-</button><br>
-      <button type="" class="operand">+</button>
-      <button type="" class="operand">/</button>
-      <button type="" class="operand">%</button><br>
-      <button type="" class="operand">*</button>
+      <button type="-" class="operand">-</button><br>
+      <button type="+" class="operand">+</button>
+      <button type="/" class="operand">/</button>
+      <button type="%" class="operand">%</button><br>
+      <button type="*" class="operand">*</button>
       <button>(</button>
       <button>)</button><br>
       <button type="" class="pi">&#960;</button>
       <button type="" class="e">e</button>
       <button type="" class="fact">n!</button><br>
-      <button type="" class="operand">x<sup>y</sup></button>
+      <button type="^" class="operand">x<sup>y</sup></button>
       <button type="method" class="cube">x<sup>3</sup></button>
       <button type="method" class="sqr">x<sup>2</sup></button><br>
       <button class="e">e</button>
-      <button type="" class="operand"><sup>y</sup>&#8730;x</button>
-      <button type="" class="operand">log<sub>y</sub>x</button><br>
+      <button type="yroot" class="operand"><sup>y</sup>&#8730;x</button>
+      <button type="logxBasey" class="operand">log<sub>y</sub>x</button><br>
+      <button type="method" class="logXbase2">log<sub>2</sub>x</button>
+      <button type="method" class="ln">ln</button>
+      <button type="method" class="log">log</button><br>
+      <button type="method" class="ex">e<sup>x</sup></button>
+      <button type="method" class="10x">10<sup>x</sup></button>
+      <button type="method" class="cuberoot"><sup>3</sup>&#8730;</button><br>      
       <button type="method" class="sin">sin</button>
       <button type="method" class="cos">cos</button>
       <button type="method" class="tan">tan</button><br>
@@ -44,13 +50,18 @@
       <button type="method" class="tan-1">tan<sup>-1</sup></button><br>
       <button type="method" class="sinh">sinh</button>
       <button type="method" class="cosh">cosh</button>
+      <button type="method" class="tanh">tanh</button><br>
       <button type="method" class="sinh-1">sinh<sup>-1</sup></button>
       <button type="method" class="cosh-1">cosh<sup>-1</sup></button>
       <button type="method" class="tanh-1">tanh<sup>-1</sup></button><br>
+      <button type="method" class="sqrt">&#8730;</button>
+      <button type="method" class="reciproc">1/x</button>
+      <button type="method" class="abs">|x|</button><br>
       <button type="" class="operand">=</button>
       <button type="" class="clear_all">c</button>
+      <button type="" class="plusminus">+/-</button>
       <button type="" class="back">back</button>
-      <p id="last_btn" type="" class=""></p>
+      <p id="last_btn" type="" class="" style="display:none;"></p>
     </div>
   </body>
   <style type="text/css">
@@ -67,28 +78,39 @@
       var operand = $(this).html();
       var last_btn_value = document.getElementById('last_btn').innerHTML;
       var last_btn_class = $('#last_btn').attr("class");
+      var last_btn_type = $('#last_btn').attr("type");
       if (last_btn_value != operand) {
         if ((last_btn_class == "number") || (last_btn_class == "pi") || (last_btn_class == "e")) {
-          document.getElementById('input1').innerHTML += document.getElementById('input2').innerHTML;
+          var input2 = document.getElementById('input2').innerHTML;
+          var i = input2.slice(0,1);
+          if (isNaN(i)) {
+            document.getElementById('input1').innerHTML += "(" + input2 + ")";
+          } else {
+            document.getElementById('input1').innerHTML += input2;
+          }
         } //adding input2 to input 1 if last button is a num or pi or e
 
         var equation = document.getElementById('input1').innerHTML;
         if ((operand == "=") && (last_btn_class == "operand")) {
-          var rep_array = equation.split(/[-*-^-yroot//%+--/]/); // splitting the equation wherever there is a opernad
+          var rep_array = equation.split(/[-*-^-yroot//%+--/]/); // splitting the equation wherever there is a operand
           var rep = rep_array[rep_array.length - 1];
           if (rep == "") {
             rep = document.getElementById('input2').innerHTML;
-            equation += document.getElementById('input2').innerHTML;
-            document.getElementById('input1').innerHTML += document.getElementById('input2').innerHTML;
+            var r = rep.slice(0,1);
+            if (isNaN(r)) {
+              equation += "(" + rep + ")";
+              document.getElementById('input1').innerHTML += "(" + document.getElementById('input2').innerHTML + ")";
+            } else {
+              equation += rep;
+              document.getElementById('input1').innerHTML += document.getElementById('input2').innerHTML;
+            }
           } // if one is calling the function on the previous value in the input2 field
 
         }
 
         if ( ( last_btn_class == "operand" ) && (operand != "=" ) ) {
           if (last_btn_class == "operand") {
-          document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0, -1);
-          } else {
-            document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0, -5);          
+          document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0, -(last_btn_type.length));
           }
         } else {
           var equation = modify(equation);
@@ -158,7 +180,7 @@
     });
     //pi and e are similar to number
 
-    var arr = [".sin",".cos",".tan",".sin-1",".cos-1",".tan-1",".sinh",".cosh",".tanh",".sinh-1",".cosh-1",".tanh-1",".fact",".cube",".sqr"]
+    var arr = [".sin",".cos",".tan",".sin-1",".cos-1",".tan-1",".sinh",".cosh",".tanh",".sinh-1",".cosh-1",".tanh-1",".fact",".cube",".sqr",".logXbase2",".ln",".log",".ex",".10x",".cuberoot",".sqrt",".reciproc",".abs"]
     var sel = arr.join(", ");
     $(sel).on('click',function(){
       var last_btn_value = document.getElementById('last_btn').innerHTML;
@@ -177,74 +199,115 @@
 
       switch ($(this).attr("class")) {
         case "sin":
-          var fnctn = "sind(";
+          var fnctn = "sind";
           break;
         case "cos":
-          var fnctn = "cosd(";
+          var fnctn = "cosd";
           break;
         case "tan":
-          var fnctn = "tand(";
+          var fnctn = "tand";
           break;
         case "sin-1":
-          var fnctn = "sininvd(";
+          var fnctn = "sininvd";
           break;
         case "cos-1":
-          var fnctn = "cosinvd(";
+          var fnctn = "cosinvd";
           break;
         case "tan-1":
-          var fnctn = "taninvd(";
+          var fnctn = "taninvd";
           break;
         case "sinh":
-          var fnctn = "sinhd(";
+          var fnctn = "sinhd";
           break;
         case "cosh":
-          var fnctn = "coshd(";
+          var fnctn = "coshd";
           break;
         case "tanh":
-          var fnctn = "tanhd(";
+          var fnctn = "tanhd";
           break;
         case "sinh-1":
-          var fnctn = "sinhinvd(";
+          var fnctn = "sinhinvd";
           break;
         case "cosh-1":
-          var fnctn = "coshinvd(";
+          var fnctn = "coshinvd";
           break;
         case "tanh-1":
-          var fnctn = "tanhinvd(";
+          var fnctn = "tanhinvd";
           break;
         case "fact":
-          var fnctn = "fact(";
+          var fnctn = "fact";
           break;
         case "cube":
-          var fnctn = "cube(";
+          var fnctn = "cube";
           break;
         case "sqr":
-          var fnctn = "sqr(";
+          var fnctn = "sqr";
+          break;
+        case "sqrt":
+          var fnctn = "sqrt";
+          break;
+        case "logXbase2":
+          var fnctn = "logXbase2";
+          break;
+        case "log":
+          var fnctn = "log";
+          break;
+        case "ln":
+          var fnctn = "ln";
+          break;
+        case "ex":
+          var fnctn = "powe";
+          break;
+        case "10x":
+          var fnctn = "powten";
+          break;
+        case "cuberoot":
+          var fnctn = "cuberoot";
+          break;
+        case "reciproc":
+          var fnctn = "reciproc";
+          break;
+        case "abs":
+          var fnctn = "abs";
       }
-      var equation = equation.slice(0,(equation.length - rep.length)) + fnctn + equation.slice(equation.length-rep.length) + ")";
-      var input2_eq = fnctn + rep + ")";
+      var equation = equation.slice(0,(equation.length - rep.length)) + fnctn + "(" + equation.slice(equation.length-rep.length) + ")";
+      var input2_eq = fnctn + "(" + rep + ")";
       var input2_eq = modify(input2_eq);
       document.getElementById('input2').innerHTML = eval(input2_eq);
       document.getElementById('input1').innerHTML = equation;
     });
+    
     $(".clear_all").on('click',function(){
       document.getElementById('input1').innerHTML = "";
       document.getElementById('input2').innerHTML = "0";
     });
+    
     $(".back").on('click',function(){
       var last_btn_class = $('#last_btn').attr("class");
       if (last_btn_class == "number") {
         document.getElementById('input2').innerHTML = document.getElementById('input2').innerHTML.slice(0,-1);
       } 
     });
+
+    $(".plusminus").on('click',function(){
+      val = document.getElementById('input2').innerHTML;
+      c = val.slice(0,1);
+      if (isNaN(c)) {
+        val = val.replace(c,"");
+      } else {
+        val = "-" + val;
+      }
+      document.getElementById('input2').innerHTML = val;
+    });
+
     $("button").on('click',function(){
       val = $(this).html();
       clss = $(this).attr("class");
       typ = $(this).attr("type");
       if ( (clss == "back") && ($('#last_btn').attr("class") == "number") ){
         $('#last_btn').attr("class","number");
-      } else if ( (clss == "back") && ($('#last_btn').attr("class") != "number") ){
-        $('#last_btn').attr("class",$('#last_btn').attr("class"));
+      } else if ( ( (clss == "back") && ($('#last_btn').attr("class") != "number") ) || clss == "plusminus" ){
+
       } else {
         $('#last_btn').attr("class",clss);
         document.getElementById('last_btn').innerHTML = val;
@@ -265,6 +328,9 @@
       var equation = equation.replace(/sinhinvd/g,"Math.asinh");
       var equation = equation.replace(/coshinvd/g,"Math.acosh");
       var equation = equation.replace(/tanhinvd/g,"Math.atanh");
+      var equation = equation.replace(/ln/g,"Math.log");
+      var equation = equation.replace(/powe/g,"Math.exp");
+      var equation = equation.replace(/abs/g,"Math.abs");
       var equation = equation.replace(/\^/g,"**");
       if (equation.indexOf('yroot') > -1 ) {
         var equation = yrootfn(equation);
@@ -288,6 +354,30 @@
 
     function sqr(number) {
       return Math.pow(number,2);
+    }
+
+    function sqrt(number) {
+      return Math.pow(number,1/2);
+    }
+
+    function logXbase2(number) {
+      return Math.log(number)/Math.log(2);
+    }
+
+    function log(number) {
+      return Math.log(number)/Math.log(10);
+    }
+
+    function powten(number) {
+      return Math.pow(10,number);
+    }
+
+    function cuberoot(number) {
+      return Math.pow(number,1/3);
+    }
+
+    function reciproc(number) {
+      return 1/number;
     }
 
     function yrootfn(equation) {
