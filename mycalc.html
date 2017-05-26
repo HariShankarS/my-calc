@@ -25,8 +25,8 @@
       <button type="/" class="operand">/</button>
       <button type="%" class="operand">%</button><br>
       <button type="*" class="operand">*</button>
-      <button>(</button>
-      <button>)</button><br>
+      <button type="" class="bracketopen">(</button>
+      <button type="" class="bracketclose">)</button><br>
       <button type="" class="pi">&#960;</button>
       <button type="" class="e">e</button>
       <button type="" class="fact">n!</button><br>
@@ -62,6 +62,7 @@
       <button type="" class="plusminus">+/-</button>
       <button type="" class="back">back</button>
       <p id="last_btn" type="" class="" style="display:none;"></p>
+      <p id="brkt"></p>
     </div>
   </body>
   <style type="text/css">
@@ -88,6 +89,7 @@
           } else {
             document.getElementById('input1').innerHTML += input2;
           }
+
         } //adding input2 to input 1 if last button is a num or pi or e
 
         var equation = document.getElementById('input1').innerHTML;
@@ -114,6 +116,13 @@
           }
         } else {
           var equation = modify(equation);
+          if (equation.indexOf("(") > -1) {
+            diff = equation.match(/\(/gi).length;
+            if (equation.indexOf(")") > -1) {
+              diff -= equation.match(/\)/gi).length;
+            }
+            equation += ")".repeat(diff);            
+          } // balancing brackets
           document.getElementById('input2').innerHTML = eval(equation);
         }  // to cut the old operand and add new one
 
@@ -152,9 +161,36 @@
         document.getElementById('input2').innerHTML = $(this).html();
       }
 
+      if (last_btn_class == "bracketclose") {
+        var eq = document.getElementById('input1').innerHTML;
+        index = eq.indexOf("(");
+        neweq = eq.slice(0,index);
+        document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.replace(eq,neweq);
+      }
+
     });
 
-
+    $(".bracketopen").on('click',function(){
+      document.getElementById('input1').innerHTML += "("
+      document.getElementById('input2').innerHTML = 0
+    });
+    
+    $(".bracketclose").on('click',function(){
+      var last_btn_value = document.getElementById('last_btn').innerHTML;
+      var last_btn_class = $('#last_btn').attr("class");
+      var last_btn_type = $('#last_btn').attr("type");
+      equation = document.getElementById('input1').innerHTML;
+      if (equation.indexOf("(") > -1) {
+        diff = equation.match(/\(/gi).length;
+        if (equation.indexOf(")") > -1) {
+          diff -= equation.match(/\)/gi).length;
+        }
+      }
+      if ( diff > 0 ){
+        document.getElementById('input1').innerHTML += document.getElementById('input2').innerHTML;
+        document.getElementById('input1').innerHTML += ")"
+      } 
+    });
 
     $(".pi").on('click',function(){
       var last_btn_value = document.getElementById('last_btn').innerHTML;
@@ -171,7 +207,7 @@
       var last_btn_value = document.getElementById('last_btn').innerHTML;
       var last_btn_class = $('#last_btn').attr("class");
       if (last_btn_value != "e") {
-        if ((last_btn_value == "=") || ( (last_btn_class != "operand") && (last_btn_class != "number") )) {
+        if ((last_btn_value == "=") || ( (last_btn_class != "operand") && (last_btn_class != "number") && (last_btn_class != "bracketopen") && (last_btn_class != "bracketclose") )) {
           document.getElementById('input1').innerHTML = "";
           document.getElementById('input2').innerHTML = "0";
         }
@@ -306,7 +342,7 @@
       typ = $(this).attr("type");
       if ( (clss == "back") && ($('#last_btn').attr("class") == "number") ){
         $('#last_btn').attr("class","number");
-      } else if ( ( (clss == "back") && ($('#last_btn').attr("class") != "number") ) || clss == "plusminus" ){
+      } else if ( ( (clss == "back") && ($('#last_btn').attr("class") != "number") ) || (clss == "plusminus") ){
 
       } else {
         $('#last_btn').attr("class",clss);
