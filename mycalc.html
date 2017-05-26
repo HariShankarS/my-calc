@@ -9,48 +9,48 @@
     <div id="input1"></div>
     <div id="input2"></div>
     <div>
-      <button class="number">1</button>
-      <button class="number">2</button>
-      <button class="number">3</button><br>
-      <button class="number">4</button>
-      <button class="number">5</button>
-      <button class="number">6</button><br>
-      <button class="number">7</button>
-      <button class="number">8</button>
-      <button class="number">9</button><br>
-      <button class="number">0</button>
-      <button class="number">.</button>
-      <button class="operand">-</button><br>
-      <button class="operand">+</button>
-      <button class="operand">/</button>
-      <button class="operand">%</button><br>
-      <button class="operand">*</button>
+      <button type="" class="number">1</button>
+      <button type="" class="number">2</button>
+      <button type="" class="number">3</button><br>
+      <button type="" class="number">4</button>
+      <button type="" class="number">5</button>
+      <button type="" class="number">6</button><br>
+      <button type="" class="number">7</button>
+      <button type="" class="number">8</button>
+      <button type="" class="number">9</button><br>
+      <button type="" class="number">0</button>
+      <button type="" class="number">.</button>
+      <button type="" class="operand">-</button><br>
+      <button type="" class="operand">+</button>
+      <button type="" class="operand">/</button>
+      <button type="" class="operand">%</button><br>
+      <button type="" class="operand">*</button>
       <button>(</button>
       <button>)</button><br>
-      <button class="pi">&#960;</button>
+      <button type="" class="pi">&#960;</button>
+      <button type="" class="e">e</button>
+      <button type="" class="fact">n!</button><br>
+      <button type="" class="operand">x<sup>y</sup></button>
+      <button type="method" class="cube">x<sup>3</sup></button>
+      <button type="method" class="sqr">x<sup>2</sup></button><br>
       <button class="e">e</button>
-      <button class="fact">n!</button><br>
-      <button class="operand">x<sup>y</sup></button>
-      <button class="cube">x<sup>3</sup></button>
-      <button class="sqr">x<sup>2</sup></button><br>
-      <button class="e">e</button>
-      <button class="operand"><sup>y</sup>&#8730;x</button>
-      <button class="operand">log<sub>y</sub>x</button><br>
-      <button class="sin">sin</button>
-      <button class="cos">cos</button>
-      <button class="tan">tan</button><br>
-      <button class="sin-1">sin<sup>-1</sup></button>
-      <button class="cos-1">cos<sup>-1</sup></button>
-      <button class="tan-1">tan<sup>-1</sup></button><br>
-      <button class="sinh">sinh</button>
-      <button class="cosh">cosh</button>
-      <button class="tanh">tanh</button><br>
-      <button class="sinh-1">sinh<sup>-1</sup></button>
-      <button class="cosh-1">cosh<sup>-1</sup></button>
-      <button class="tanh-1">tanh<sup>-1</sup></button><br>
-      <button class="operand">=</button>
-      <button class="clear_all">c</button>
-      <p id="last_btn" class="" style="display: none;"></p>
+      <button type="" class="operand"><sup>y</sup>&#8730;x</button>
+      <button type="" class="operand">log<sub>y</sub>x</button><br>
+      <button type="method" class="sin">sin</button>
+      <button type="method" class="cos">cos</button>
+      <button type="method" class="tan">tan</button><br>
+      <button type="method" class="sin-1">sin<sup>-1</sup></button>
+      <button type="method" class="cos-1">cos<sup>-1</sup></button>
+      <button type="method" class="tan-1">tan<sup>-1</sup></button><br>
+      <button type="method" class="sinh">sinh</button>
+      <button type="method" class="cosh">cosh</button>
+      <button type="method" class="sinh-1">sinh<sup>-1</sup></button>
+      <button type="method" class="cosh-1">cosh<sup>-1</sup></button>
+      <button type="method" class="tanh-1">tanh<sup>-1</sup></button><br>
+      <button type="" class="operand">=</button>
+      <button type="" class="clear_all">c</button>
+      <button type="" class="back">back</button>
+      <p id="last_btn" type="" class=""></p>
     </div>
   </body>
   <style type="text/css">
@@ -109,19 +109,31 @@
     $(".number").on('click',function(){
       var last_btn_value = document.getElementById('last_btn').innerHTML;
       var last_btn_class = $('#last_btn').attr("class");
-      if ((last_btn_value == "=") || ( (last_btn_class != "operand") && (last_btn_class != "number") )) {
+      var last_btn_type = $('#last_btn').attr("type");
+      if (last_btn_value == "=") {
         document.getElementById('input1').innerHTML = "";
         document.getElementById('input2').innerHTML = "0";
       } // clearing fields if completed, or if last button is a function
 
-      if ($('#last_btn').attr("class") == "number") {
+      if (last_btn_class == "number") {
         document.getElementById('input2').innerHTML += $(this).html();
       } else {
         document.getElementById('input2').innerHTML = $(this).html();        
       }
       // adding number to the previous number or else replacing
 
+
+      if (last_btn_type == "method") {
+        repl = document.getElementById('input1').innerHTML.split(/\+|\%|\-|\/|\*|\^|yroot|logxBasey/);
+        repl_value = repl[repl.length - 1];
+        document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.replace(repl_value,"");
+        document.getElementById('input2').innerHTML = $(this).html();
+      }
+
     });
+
+
+
     $(".pi").on('click',function(){
       var last_btn_value = document.getElementById('last_btn').innerHTML;
       var last_btn_class = $('#last_btn').attr("class");
@@ -219,11 +231,25 @@
       document.getElementById('input1').innerHTML = "";
       document.getElementById('input2').innerHTML = "0";
     });
+    $(".back").on('click',function(){
+      var last_btn_class = $('#last_btn').attr("class");
+      if (last_btn_class == "number") {
+        document.getElementById('input2').innerHTML = document.getElementById('input2').innerHTML.slice(0,-1);
+      } 
+    });
     $("button").on('click',function(){
       val = $(this).html();
       clss = $(this).attr("class");
-      document.getElementById('last_btn').innerHTML = val;
-      $('#last_btn').attr("class",clss);
+      typ = $(this).attr("type");
+      if ( (clss == "back") && ($('#last_btn').attr("class") == "number") ){
+        $('#last_btn').attr("class","number");
+      } else if ( (clss == "back") && ($('#last_btn').attr("class") != "number") ){
+        $('#last_btn').attr("class",$('#last_btn').attr("class"));
+      } else {
+        $('#last_btn').attr("class",clss);
+        document.getElementById('last_btn').innerHTML = val;
+        $('#last_btn').attr("type",typ);      
+      }
     });
 
     function modify(equation) {
