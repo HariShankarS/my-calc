@@ -29,6 +29,7 @@
       <button type="" class="number">.</button>
       <button type="-" class="operand">-</button><br>
       <button type="mod" class="operand">mod</button>
+      <button type="exp" class="operand">Exp</button>
       <button type="+" class="operand">+</button>
       <button type="/" class="operand">/</button>
       <button type="%" class="operand">%</button><br>
@@ -143,7 +144,7 @@
         } // aading result to input1 and then adding operand
 
         if (operand != "=" ) {
-          document.getElementById('input1').innerHTML += operand.replace("x<sup>y</sup>","^").replace("<sup>y</sup>√x","yroot").replace("log<sub>y</sub>x","logxBasey");
+          document.getElementById('input1').innerHTML += operand.replace("x<sup>y</sup>","^").replace("<sup>y</sup>√x","yroot").replace("log<sub>y</sub>x","logxBasey").replace("Exp","e+0");
         } // adding operand beside input
 
       }
