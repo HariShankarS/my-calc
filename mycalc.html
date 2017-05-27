@@ -28,6 +28,7 @@
       <button type="" class="number">0</button>
       <button type="" class="number">.</button>
       <button type="-" class="operand">-</button><br>
+      <button type="mod" class="operand">mod</button>
       <button type="+" class="operand">+</button>
       <button type="/" class="operand">/</button>
       <button type="%" class="operand">%</button><br>
@@ -387,12 +388,16 @@
       var equation = equation.replace(/powe/g,"Math.exp");
       var equation = equation.replace(/abs/g,"Math.abs");
       var equation = equation.replace(/\^/g,"**");
+      var equation = equation.replace(/\%/g,"*0.01*");
+      console.log(equation);
+      var equation = equation.replace(/mod/g,"\%");
       if (equation.indexOf('yroot') > -1 ) {
         var equation = yrootfn(equation);
       }
       if (equation.indexOf('logxBasey') > -1 ) {
         var equation = logxBaseyfn(equation);
       }
+
       return equation;
     }
 
