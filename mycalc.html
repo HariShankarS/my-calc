@@ -6,8 +6,15 @@
     <title>My Scientific Calculator</title>
   </head>
   <body>
+
     <div id="input1"></div>
     <div id="input2">0</div>
+
+    <form action="">
+      <input type="radio" name="angle" value="deg"> Deg
+      <input type="radio" name="angle" value="rad"> Rad
+    </form>
+
     <div>
       <button type="" class="number">1</button>
       <button type="" class="number">2</button>
@@ -123,6 +130,9 @@
             }
             equation += ")".repeat(diff);            
           } // balancing brackets
+          if (equation.indexOf(")(") > -1) {
+            equation = equation.replace(")(",")*(")
+          }
           document.getElementById('input2').innerHTML = eval(equation);
         }  // to cut the old operand and add new one
 
@@ -232,43 +242,43 @@
         rep = document.getElementById('input2').innerHTML;
         equation += document.getElementById('input2').innerHTML;
       } // if one is calling the function on the previous value in the input2 field
-
+      an = ($('input[name=angle]:checked').val()).slice(0,1);
       switch ($(this).attr("class")) {
         case "sin":
-          var fnctn = "sind";
+          var fnctn = "sin"+an;
           break;
         case "cos":
-          var fnctn = "cosd";
+          var fnctn = "cos"+an;
           break;
         case "tan":
-          var fnctn = "tand";
+          var fnctn = "tan"+an;
           break;
         case "sin-1":
-          var fnctn = "sininvd";
+          var fnctn = "asin"+an;
           break;
         case "cos-1":
-          var fnctn = "cosinvd";
+          var fnctn = "acos"+an;
           break;
         case "tan-1":
-          var fnctn = "taninvd";
+          var fnctn = "atan"+an;
           break;
         case "sinh":
-          var fnctn = "sinhd";
+          var fnctn = "sinh"+an;
           break;
         case "cosh":
-          var fnctn = "coshd";
+          var fnctn = "cosh"+an;
           break;
         case "tanh":
-          var fnctn = "tanhd";
+          var fnctn = "tanh"+an;
           break;
         case "sinh-1":
-          var fnctn = "sinhinvd";
+          var fnctn = "sinhinv"+an;
           break;
         case "cosh-1":
-          var fnctn = "coshinvd";
+          var fnctn = "coshinv"+an;
           break;
         case "tanh-1":
-          var fnctn = "tanhinvd";
+          var fnctn = "tanhinv"+an;
           break;
         case "fact":
           var fnctn = "fact";
@@ -352,18 +362,27 @@
     });
 
     function modify(equation) {
-      var equation = equation.replace(/sind/g,"Math.sin");
-      var equation = equation.replace(/cosd/g,"Math.cos");
-      var equation = equation.replace(/tand/g,"Math.tan");
-      var equation = equation.replace(/sininvd/g,"Math.asin");
-      var equation = equation.replace(/cosinvd/g,"Math.acos");
-      var equation = equation.replace(/taninvd/g,"Math.atan");
+      var equation = equation.replace(/asind/g,"Math.asin");
+      var equation = equation.replace(/acosd/g,"Math.acos");
+      var equation = equation.replace(/atand/g,"Math.atan");
       var equation = equation.replace(/sinhd/g,"Math.sinh");
       var equation = equation.replace(/coshd/g,"Math.cosh");
       var equation = equation.replace(/tanhd/g,"Math.tanh");
       var equation = equation.replace(/sinhinvd/g,"Math.asinh");
       var equation = equation.replace(/coshinvd/g,"Math.acosh");
       var equation = equation.replace(/tanhinvd/g,"Math.atanh");
+      var equation = equation.replace(/sinr/g,"Math.sin");
+      var equation = equation.replace(/cosr/g,"Math.cos");
+      var equation = equation.replace(/tanr/g,"Math.tan");
+      var equation = equation.replace(/asinr/g,"Math.asin");
+      var equation = equation.replace(/acosr/g,"Math.acos");
+      var equation = equation.replace(/atanr/g,"Math.atan");
+      var equation = equation.replace(/sinhr/g,"Math.sinh");
+      var equation = equation.replace(/coshr/g,"Math.cosh");
+      var equation = equation.replace(/tanhr/g,"Math.tanh");
+      var equation = equation.replace(/sinhinvr/g,"Math.asinh");
+      var equation = equation.replace(/coshinvr/g,"Math.acosh");
+      var equation = equation.replace(/tanhinvr/g,"Math.atanh");
       var equation = equation.replace(/ln/g,"Math.log");
       var equation = equation.replace(/powe/g,"Math.exp");
       var equation = equation.replace(/abs/g,"Math.abs");
@@ -414,6 +433,36 @@
 
     function reciproc(number) {
       return 1/number;
+    }
+
+    function sind(number) {
+      return Math.sin(number*(Math.PI/180));
+    }
+
+    function cosd(number) {
+      return Math.cos(number*(Math.PI/180));
+    }
+
+    function tand(number) {
+      return Math.tan(number*(Math.PI/180));
+    }
+
+    function toFixed(x) {
+      if (Math.abs(x) < 1.0) {
+        var e = parseInt(x.toString().split('e-')[1]);
+        if (e) {
+            x *= Math.pow(10,e-1);
+            x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
+        }
+      } else {
+        var e = parseInt(x.toString().split('+')[1]);
+        if (e > 20) {
+            e -= 20;
+            x /= Math.pow(10,e);
+            x += (new Array(e+1)).join('0');
+        }
+      }
+      return x;
     }
 
     function yrootfn(equation) {
