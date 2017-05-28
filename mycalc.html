@@ -11,11 +11,17 @@
     <div id="input2">0</div>
 
     <form action="">
-      <input type="radio" name="angle" value="deg"> Deg
+      <input type="radio" name="angle" value="deg" checked> Deg
       <input type="radio" name="angle" value="rad"> Rad
     </form>
 
     <div>
+      <p class="memory" value="0"></p>
+      <button type="" class="mfn" id="mc">MC</button>
+      <button type="" class="mfn" id="mr">MR</button>
+      <button type="" class="mfn" id="ms">MS</button>
+      <button type="" class="mfn" id="mplus">M+</button>
+      <button type="" class="mfn" id="mminus">M-</button><br>
       <button type="" class="number">1</button>
       <button type="" class="number">2</button>
       <button type="" class="number">3</button><br>
@@ -29,7 +35,6 @@
       <button type="" class="number">.</button>
       <button type="-" class="operand">-</button><br>
       <button type="mod" class="operand">mod</button>
-      <button type="exp" class="operand">Exp</button>
       <button type="+" class="operand">+</button>
       <button type="/" class="operand">/</button>
       <button type="%" class="operand">%</button><br>
@@ -40,6 +45,7 @@
       <button type="" class="e">e</button>
       <button type="" class="fact">n!</button><br>
       <button type="^" class="operand">x<sup>y</sup></button>
+      <button type="exp" class="operand">Exp</button>
       <button type="method" class="cube">x<sup>3</sup></button>
       <button type="method" class="sqr">x<sup>2</sup></button><br>
       <button class="e">e</button>
@@ -84,6 +90,27 @@
     }
   </style>
   <script type="text/javascript">
+    $("#mc").on('click',function(){
+      $(".memory").attr("value","0");
+    });
+    $("#mr").on('click',function(){
+      val = $(".memory").attr("value");
+      document.getElementById('input2').innerHTML = val;
+    });
+    $("#ms").on('click',function(){
+      val = document.getElementById('input2').innerHTML;
+      $(".memory").attr("value",val);
+    });
+    $("#mplus").on('click',function(){
+      val = parseFloat($(".memory").attr("value"));
+      val += parseFloat(document.getElementById('input2').innerHTML);
+      $(".memory").attr("value",val);
+    });
+    $("#mminus").on('click',function(){
+      val = parseFloat($(".memory").attr("value"));
+      val -= parseFloat(document.getElementById('input2').innerHTML);
+      $(".memory").attr("value",val);
+    });
     $(".operand").on('click',function(){
       var operand = $(this).html();
       var last_btn_value = document.getElementById('last_btn').innerHTML;
@@ -103,8 +130,9 @@
 
         var equation = document.getElementById('input1').innerHTML;
         if ((operand == "=") && (last_btn_class == "operand")) {
-          var rep_array = equation.split(/[-*-^-yroot//%+--/]/); // splitting the equation wherever there is a operand
+          var rep_array = equation.split(/\+|\%|\-|\/|\*|\^|yroot|logxBasey|mod|e+0/) // splitting the equation wherever there is a operand
           var rep = rep_array[rep_array.length - 1];
+          console.log(rep_array);
           if (rep == "") {
             rep = document.getElementById('input2').innerHTML;
             var r = rep.slice(0,1);
@@ -167,7 +195,7 @@
 
 
       if (last_btn_type == "method") {
-        repl = document.getElementById('input1').innerHTML.split(/\+|\%|\-|\/|\*|\^|yroot|logxBasey/);
+        repl = document.getElementById('input1').innerHTML.split(/\+|\%|\-|\/|\*|\^|yroot|mod|logxBasey/);
         repl_value = repl[repl.length - 1];
         document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.replace(repl_value,"");
         document.getElementById('input2').innerHTML = $(this).html();
@@ -181,7 +209,6 @@
       }
 
     });
-
     $(".bracketopen").on('click',function(){
       document.getElementById('input1').innerHTML += "("
       document.getElementById('input2').innerHTML = 0
@@ -238,7 +265,7 @@
       } // if one wanted call method on the previous result
 
       var equation = document.getElementById('input1').innerHTML;
-      var rep_array = equation.split(/\+|\%|\-|\/|\*|\^|yroot|logxBasey/); // splitting the equation wherever there is a opernad
+      var rep_array = equation.split(/\+|\%|\-|\/|\*|\^|yroot|mod|logxBasey/); // splitting the equation wherever there is a opernad
       var rep = rep_array[rep_array.length - 1];
       if (rep == "") {
         rep = document.getElementById('input2').innerHTML;
@@ -354,7 +381,7 @@
       typ = $(this).attr("type");
       if ( (clss == "back") && ($('#last_btn').attr("class") == "number") ){
         $('#last_btn').attr("class","number");
-      } else if ( ( (clss == "back") && ($('#last_btn').attr("class") != "number") ) || (clss == "plusminus") ){
+      } else if ( ( (clss == "back") && ($('#last_btn').attr("class") != "number") ) || (clss == "plusminus") || (clss == "mfn") ){
 
       } else {
         $('#last_btn').attr("class",clss);
@@ -390,7 +417,6 @@
       var equation = equation.replace(/abs/g,"Math.abs");
       var equation = equation.replace(/\^/g,"**");
       var equation = equation.replace(/\%/g,"*0.01*");
-      console.log(equation);
       var equation = equation.replace(/mod/g,"\%");
       if (equation.indexOf('yroot') > -1 ) {
         var equation = yrootfn(equation);
@@ -472,7 +498,7 @@
     }
 
     function yrootfn(equation) {
-      eq = equation.split(/\+|\%|\-|\/|\*|\^|logxBasey/);
+      eq = equation.split(/\+|\%|\-|\/|\*|\^|mod|logxBasey/);
       eq.forEach(function(a){
         if (a.indexOf("yroot") > -1) {
           if ( ((a.match(/yroot/g) || []).length) < 2) {
@@ -498,7 +524,7 @@
     }
 
     function logxBaseyfn(equation) {
-      eq = equation.split(/\+|\%|\-|\/|\*|\^|yroot/);
+      eq = equation.split(/\+|\%|\-|\/|\*|\^|mod|yroot/);
       eq.forEach(function(a){
         if (a.indexOf("logxBasey") > -1) {
           if ( ((a.match(/logxBasey/g) || []).length) < 2) {
