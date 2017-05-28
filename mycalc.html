@@ -6,92 +6,117 @@
     <title>My Scientific Calculator</title>
   </head>
   <body>
+    <div class="over">
+      <div id="input1"></div>
+      <div id="input2">0</div>
+      <p class="capitalm" style="display: none;">M</p>
 
-    <div id="input1"></div>
-    <div id="input2">0</div>
-
-    <form action="">
-      <input type="radio" name="angle" value="deg" checked> Deg
-      <input type="radio" name="angle" value="rad"> Rad
-    </form>
-
-    <div>
-      <p class="memory" value="0"></p>
-      <button type="" class="mfn" id="mc">MC</button>
-      <button type="" class="mfn" id="mr">MR</button>
-      <button type="" class="mfn" id="ms">MS</button>
-      <button type="" class="mfn" id="mplus">M+</button>
-      <button type="" class="mfn" id="mminus">M-</button><br>
-      <button type="" class="number">1</button>
-      <button type="" class="number">2</button>
-      <button type="" class="number">3</button><br>
-      <button type="" class="number">4</button>
-      <button type="" class="number">5</button>
-      <button type="" class="number">6</button><br>
-      <button type="" class="number">7</button>
-      <button type="" class="number">8</button>
-      <button type="" class="number">9</button><br>
-      <button type="" class="number">0</button>
-      <button type="" class="number">.</button>
-      <button type="-" class="operand">-</button><br>
-      <button type="mod" class="operand">mod</button>
-      <button type="+" class="operand">+</button>
-      <button type="/" class="operand">/</button>
-      <button type="%" class="operand">%</button><br>
-      <button type="*" class="operand">*</button>
-      <button type="" class="bracketopen">(</button>
-      <button type="" class="bracketclose">)</button><br>
-      <button type="" class="pi">&#960;</button>
-      <button type="" class="e">e</button>
-      <button type="" class="fact">n!</button><br>
-      <button type="^" class="operand">x<sup>y</sup></button>
-      <button type="exp" class="operand">Exp</button>
-      <button type="method" class="cube">x<sup>3</sup></button>
-      <button type="method" class="sqr">x<sup>2</sup></button><br>
-      <button class="e">e</button>
-      <button type="yroot" class="operand"><sup>y</sup>&#8730;x</button>
-      <button type="logxBasey" class="operand">log<sub>y</sub>x</button><br>
-      <button type="method" class="logXbase2">log<sub>2</sub>x</button>
-      <button type="method" class="ln">ln</button>
-      <button type="method" class="log">log</button><br>
-      <button type="method" class="ex">e<sup>x</sup></button>
-      <button type="method" class="10x">10<sup>x</sup></button>
-      <button type="method" class="cuberoot"><sup>3</sup>&#8730;</button><br>      
-      <button type="method" class="sin">sin</button>
-      <button type="method" class="cos">cos</button>
-      <button type="method" class="tan">tan</button><br>
-      <button type="method" class="sin-1">sin<sup>-1</sup></button>
-      <button type="method" class="cos-1">cos<sup>-1</sup></button>
-      <button type="method" class="tan-1">tan<sup>-1</sup></button><br>
-      <button type="method" class="sinh">sinh</button>
-      <button type="method" class="cosh">cosh</button>
-      <button type="method" class="tanh">tanh</button><br>
-      <button type="method" class="sinh-1">sinh<sup>-1</sup></button>
-      <button type="method" class="cosh-1">cosh<sup>-1</sup></button>
-      <button type="method" class="tanh-1">tanh<sup>-1</sup></button><br>
-      <button type="method" class="sqrt">&#8730;</button>
-      <button type="method" class="reciproc">1/x</button>
-      <button type="method" class="abs">|x|</button><br>
-      <button type="" class="operand">=</button>
-      <button type="" class="clear_all">c</button>
-      <button type="" class="plusminus">+/-</button>
-      <button type="" class="back">back</button>
-      <p id="last_btn" type="" class="" style="display:none;"></p>
-      <p id="brkt"></p>
+      <div>
+        <p class="memory" value="0"></p>
+        <button type="mod" class="operand">mod</button>
+        <input type="radio" name="angle" value="deg" checked> Deg
+        <input type="radio" name="angle" value="rad"> Rad
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <button type="" class="mfn" id="mc">MC</button>
+        <button type="" class="mfn" id="mr">MR</button>
+        <button type="" class="mfn" id="ms">MS</button>
+        <button type="" class="mfn" id="mplus">M+</button>
+        <button type="" class="mfn" id="mminus">M-</button>
+        <button type="method" class="sinh">sinh</button>
+        <button type="method" class="cosh">cosh</button>
+        <button type="method" class="tanh">tanh</button>
+        <button type="exp" class="operand">Exp</button>
+        <button type="" class="bracketopen">(</button>
+        <button type="" class="bracketclose">)</button>
+        <button type="" class="back">back</button>
+        <button type="" class="clear_all">c</button>
+        <button type="" class="plusminus">+/-</button>
+        <button type="method" class="sqrt">&#8730;</button>
+        <button type="method" class="sinh-1">sinh<sup>-1</sup></button>
+        <button type="method" class="cosh-1">cosh<sup>-1</sup></button>
+        <button type="method" class="tanh-1">tanh<sup>-1</sup></button>
+        <button type="method" class="logXbase2">log<sub>2</sub>x</button>
+        <button type="method" class="ln">ln</button>
+        <button type="method" class="log">log</button>
+        <button type="" class="number">7</button>
+        <button type="" class="number">8</button>
+        <button type="" class="number">9</button>
+        <button type="/" class="operand">/</button>
+        <button type="%" class="operand">%</button>
+        <button type="" class="pi">&#960;</button>
+        <button type="" class="e">e</button>
+        <button type="" class="fact">n!</button>
+        <button type="logxBasey" class="operand">log<sub>y</sub>x</button>
+        <button type="method" class="ex">e<sup>x</sup></button>
+        <button type="method" class="10x">10<sup>x</sup></button>
+        <button type="" class="number">4</button>
+        <button type="" class="number">5</button>
+        <button type="" class="number">6</button>
+        <button type="*" class="operand">*</button>
+        <button type="method" class="reciproc">1/x</button>
+        <button type="method" class="sin">sin</button>
+        <button type="method" class="cos">cos</button>
+        <button type="method" class="tan">tan</button>
+        <button type="^" class="operand">x<sup>y</sup></button>
+        <button type="method" class="cube">x<sup>3</sup></button>
+        <button type="method" class="sqr">x<sup>2</sup></button>
+        <button type="" class="number">1</button>
+        <button type="" class="number">2</button>
+        <button type="" class="number">3</button>
+        <button type="-" class="operand">-</button>
+        <button type="" class="operand" id="equalto">=</button>
+        <button type="method" class="sin-1">sin<sup>-1</sup></button>
+        <button type="method" class="cos-1">cos<sup>-1</sup></button>
+        <button type="method" class="tan-1">tan<sup>-1</sup></button>
+        <button type="yroot" class="operand"><sup>y</sup>&#8730;x</button>
+        <button type="method" class="cuberoot"><sup>3</sup>&#8730;</button>
+        <button type="method" class="abs">|x|</button>
+        <button type="" class="number" id="zero">0</button>
+        <button type="" class="number">.</button>
+        <button type="+" class="operand">+</button>
+        <p id="last_btn" type="" class="" style="display:none;"></p>
+        <p id="brkt"></p>
+      </div>
     </div>
   </body>
   <style type="text/css">
     #input1, #input2 {
-      width: 20%;
-      min-height: 20px;
+      width: 95%;
+      margin: 5px;
+      min-height: 25px;
       text-align: right;
       border: 1px solid black;
       margin-bottom: 3px;
+    }
+    button {
+      padding: 3px 5px 3px 5px !important;
+      background-color: #F2F2F2;
+      border: 0.5px solid #bdbdbd;
+      font-size: 13px;
+      font-weight: bold;
+      margin: 2px;
+      width: 45px !important;
+    }
+    .back {
+      width: 98px !important;
+      text-align: center;
+    }
+    #zero {
+      width: 98px !important;
+      text-align: center;      
+    }
+    .over {
+      width: 600px;
+    }
+
+    p {
+      padding-left: 5px;
     }
   </style>
   <script type="text/javascript">
     $("#mc").on('click',function(){
       $(".memory").attr("value","0");
+      $(".capitalm").hide();
     });
     $("#mr").on('click',function(){
       val = $(".memory").attr("value");
@@ -100,6 +125,7 @@
     $("#ms").on('click',function(){
       val = document.getElementById('input2').innerHTML;
       $(".memory").attr("value",val);
+      $(".capitalm").show();
     });
     $("#mplus").on('click',function(){
       val = parseFloat($(".memory").attr("value"));
