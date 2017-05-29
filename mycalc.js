@@ -37,7 +37,7 @@ $(document).ready(function() {
         if ((last_btn_class == "number") || (last_btn_class == "pi") || (last_btn_class == "e")) {
           if (document.getElementById('input1').innerHTML.slice(-3) == "e+0") {
             document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0,-1);
-          }
+          } // to deduct "0" from exp function
           var input2 = document.getElementById('input2').innerHTML;
           var i = input2.slice(0,1);
           if (isNaN(i)) {
@@ -50,9 +50,15 @@ $(document).ready(function() {
 
         var equation = document.getElementById('input1').innerHTML;
         if ((operand == "=") && (last_btn_class == "operand")) {
-          var rep_array = equation.split(/\+|\%|\-|\/|\*|\^|yroot|logxBasey|mod|e+0/) // splitting the equation wherever there is a operand
-          var rep = rep_array[rep_array.length - 1];
+          var rep_array = equation.split(/\+|\%|\-|\/|\*|\^|yroot|logxBasey|mod|e+0/); // splitting the equation wherever there is a operand
           console.log(rep_array);
+          var rep = rep_array[rep_array.length - 1];
+          if ((rep == "0") && (document.getElementById('input1').innerHTML.slice(-3) == "e+0") ) {
+            rep = document.getElementById('input2').innerHTML;
+            document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0,-1);
+            document.getElementById('input1').innerHTML += document.getElementById('input2').innerHTML;
+            equation += rep;
+          }  // for exp function on same value in the input field
           if (rep == "") {
             rep = document.getElementById('input2').innerHTML;
             var r = rep.slice(0,1);
@@ -198,11 +204,11 @@ $(document).ready(function() {
         rep = document.getElementById('input2').innerHTML;
         equation += document.getElementById('input2').innerHTML;
       } // if one is calling the function on the previous value in the input2 field
-      if (rep == "0") {
+      if ((rep == "0") && (document.getElementById('input1').innerHTML.slice(-3) == "e+0") ) {
         rep = document.getElementById('input2').innerHTML;
         equation = equation.slice(0,-1);
         equation += document.getElementById('input2').innerHTML;
-      }
+      } // for exp function 
       an = ($('input[name=angle]:checked').val()).slice(0,1);
       switch ($(this).attr("class")) {
         case "sin":
