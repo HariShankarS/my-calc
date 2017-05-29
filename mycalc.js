@@ -51,12 +51,12 @@ $(document).ready(function() {
         var equation = document.getElementById('input1').innerHTML;
         if ((operand == "=") && (last_btn_class == "operand")) {
           var rep_array = equation.split(/\+|\%|\-|\/|\*|\^|yroot|logxBasey|mod|e+0/); // splitting the equation wherever there is a operand
-          console.log(rep_array);
           var rep = rep_array[rep_array.length - 1];
           if ((rep == "0") && (document.getElementById('input1').innerHTML.slice(-3) == "e+0") ) {
             rep = document.getElementById('input2').innerHTML;
             document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0,-1);
             document.getElementById('input1').innerHTML += document.getElementById('input2').innerHTML;
+            equation = equation.slice(0,-1);
             equation += rep;
           }  // for exp function on same value in the input field
           if (rep == "") {
@@ -191,6 +191,9 @@ $(document).ready(function() {
     $(sel).on('click',function(){
       var last_btn_value = document.getElementById('last_btn').innerHTML;
       var last_btn_class = $('#last_btn').attr("class");
+      if (document.getElementById('input1').innerHTML.indexOf('(-') > -1 ) {
+        document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.replace('(-','minus');
+      }
       if (last_btn_value == "=") {
         document.getElementById('input1').innerHTML = document.getElementById('input2').innerHTML;
         var equation = document.getElementById('input1').innerHTML;
@@ -287,7 +290,7 @@ $(document).ready(function() {
       var input2_eq = fnctn + "(" + rep + ")";
       var input2_eq = modify(input2_eq);
       document.getElementById('input2').innerHTML = eval(input2_eq);
-      document.getElementById('input1').innerHTML = equation;
+      document.getElementById('input1').innerHTML = equation.replace('minus','(-');
     });
     
     $(".clear_all").on('click',function(){
@@ -356,6 +359,8 @@ $(document).ready(function() {
       var equation = equation.replace(/\^/g,"**");
       var equation = equation.replace(/\%/g,"*0.01*");
       var equation = equation.replace(/mod/g,"\%");
+      var equation = equation.replace(/e+/g,"*10**");
+      var equation = equation.replace(/minus/g,"(-");
       if (equation.indexOf('yroot') > -1 ) {
         var equation = yrootfn(equation);
       }
