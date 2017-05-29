@@ -35,6 +35,9 @@ $(document).ready(function() {
       var last_btn_type = $('#last_btn').attr("type");
       if (last_btn_value != operand) {
         if ((last_btn_class == "number") || (last_btn_class == "pi") || (last_btn_class == "e")) {
+          if (document.getElementById('input1').innerHTML.slice(-3) == "e+0") {
+            document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.slice(0,-1);
+          }
           var input2 = document.getElementById('input2').innerHTML;
           var i = input2.slice(0,1);
           if (isNaN(i)) {
@@ -114,7 +117,12 @@ $(document).ready(function() {
       if (last_btn_type == "method") {
         repl = document.getElementById('input1').innerHTML.split(/\+|\%|\-|\/|\*|\^|yroot|mod|logxBasey/);
         repl_value = repl[repl.length - 1];
-        document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.replace(repl_value,"");
+        pre_repl_value = repl[repl.length - 2];
+        if ( (pre_repl_value.slice(-1) == "(") ) {
+          document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.replace(pre_repl_value+"-"+repl_value,"");
+        } else {
+          document.getElementById('input1').innerHTML = document.getElementById('input1').innerHTML.replace(repl_value,"");
+        }
         document.getElementById('input2').innerHTML = $(this).html();
       }
 
@@ -152,7 +160,7 @@ $(document).ready(function() {
       var last_btn_value = document.getElementById('last_btn').innerHTML;
       var last_btn_class = $('#last_btn').attr("class");
       if (last_btn_value != "π") {
-        if ((last_btn_value == "=") || ( (last_btn_class != "operand") && (last_btn_class != "number") )) {
+        if ((last_btn_value == "=") || ( (last_btn_class != "operand") && (last_btn_class != "number") && (last_btn_class != "bracketopen") && (last_btn_class != "bracketclose") )) {
           document.getElementById('input1').innerHTML = "";
           document.getElementById('input2').innerHTML = "0";
         }
@@ -179,15 +187,22 @@ $(document).ready(function() {
       var last_btn_class = $('#last_btn').attr("class");
       if (last_btn_value == "=") {
         document.getElementById('input1').innerHTML = document.getElementById('input2').innerHTML;
-      } // if one wanted call method on the previous result
-
-      var equation = document.getElementById('input1').innerHTML;
-      var rep_array = equation.split(/\+|\%|\-|\/|\*|\^|yroot|mod|logxBasey/); // splitting the equation wherever there is a opernad
+        var equation = document.getElementById('input1').innerHTML;
+        var rep_array = [equation];
+      } else { // if one wanted call method on the previous result
+        var equation = document.getElementById('input1').innerHTML;
+        var rep_array = equation.split(/\+|\%|\-|\/|\*|\^|yroot|mod|logxBasey/); // splitting the equation wherever there is a opernad
+      }
       var rep = rep_array[rep_array.length - 1];
       if (rep == "") {
         rep = document.getElementById('input2').innerHTML;
         equation += document.getElementById('input2').innerHTML;
       } // if one is calling the function on the previous value in the input2 field
+      if (rep == "0") {
+        rep = document.getElementById('input2').innerHTML;
+        equation = equation.slice(0,-1);
+        equation += document.getElementById('input2').innerHTML;
+      }
       an = ($('input[name=angle]:checked').val()).slice(0,1);
       switch ($(this).attr("class")) {
         case "sin":
