@@ -4,7 +4,42 @@ $(document).ready(function() {
         // is mobile..
       alert('Please make sure that your mobile view is in LandScape mode!')
     }  
+    $("#calc_min").on('click', function(){
+      $(this).hide();
+      $('#calculator_help').hide();
+      $('#calculator_help_back').hide();
+      $('#calc_max').show();
+      $('#calculator_content').hide();
+      $('#calculator').css("height","30px");
+    });
+    $("#calc_max").on('click', function(){
+      $(this).hide();
+      $("#calc_min").show();
+      $('#calculator_content').show();
+      $('#calculator_help').show();
+      $('#calculator_help_back').hide();
+      $('#calculator').css("height","331px");
+    });
+    $('#close_btn').click(function(){
+      $('#calculator').hide();
+    });
+    /** new help changes **/
+    $('#calculator_help').on('click',function(){
+      $(this).hide();
+      $('#calculator_help_back').show();
+      $('.over').hide();
+      $('#helpContent').show();
+      
+    });
 
+    $('#calculator_help_back').on('click',function(){
+      $(this).hide();
+      $('.over').show();
+      $('#calculator_help').show();
+      $('.text_container').show();
+      $('#helpContent').hide();
+      
+    });
     $("#mc").on('click',function(){
       $(".memory").attr("value","0");
       $(".capitalm").hide();
@@ -359,7 +394,7 @@ $(document).ready(function() {
       var equation = equation.replace(/\^/g,"**");
       var equation = equation.replace(/\%/g,"*0.01*");
       var equation = equation.replace(/mod/g,"\%");
-      var equation = equation.replace(/e+/g,"*10**");
+      var equation = equation.replace(/e\+/g,"*10**");
       var equation = equation.replace(/minus/g,"(-");
       if (equation.indexOf('yroot') > -1 ) {
         var equation = yrootfn(equation);

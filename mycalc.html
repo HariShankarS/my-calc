@@ -4,85 +4,135 @@
     <meta charset="utf-8">
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
     <title>My Scientific Calculator</title>
      <script src="mycalc.js"></script>
      <link rel="stylesheet" type="text/css" href="mycalc.css">
   </head>
   <body>
-    <div class="over">
-      <div id="input1"></div>
-      <div id="input2">0</div>
-      <p class="capitalm" style="display: none;">M</p>
-
-      <div>
-        <div style="float: left;">
-          <p class="memory" value="0"></p>
-          <button type="mod" class="operand">mod</button>
-          <input type="radio" name="angle" value="deg" checked> Deg
-          <input type="radio" name="angle" value="rad"> Rad
+    <div id="calculator" class="calc_container">
+      <div id="help_guide">
+        <span>Scientific Calculator</span>
+        <div id="calculator_help" class="help_back">Help</div>
+        <div style="display:none;" id="calculator_help_back" class="help_back">Back</div>
+      </div>
+      <div id="calculator_content">
+        <div class="over">
+          <div id="input1"></div>
+          <div id="input2">0</div>
+          <p class="capitalm" style="display: none;">M</p>
+          <div>
+            <div style="float: left;">
+              <p class="memory" value="0"></p>
+              <button type="mod" class="operand">mod</button>
+              <input type="radio" name="angle" value="deg" checked> Deg
+              <input type="radio" name="angle" value="rad"> Rad
+            </div>
+            <div style="float: right; margin-top: 10px;">
+              <button type="" class="mfn" id="mc">MC</button>
+              <button type="" class="mfn" id="mr">MR</button>
+              <button type="" class="mfn" id="ms">MS</button>
+              <button type="" class="mfn" id="mplus">M+</button>
+              <button type="" class="mfn" id="mminus">M-</button>
+            </div>
+            <div style="clear: both;"></div>
+            <button type="method" class="sinh">sinh</button>
+            <button type="method" class="cosh">cosh</button>
+            <button type="method" class="tanh">tanh</button>
+            <button type="exp" class="operand">Exp</button>
+            <button type="" class="bracketopen">(</button>
+            <button type="" class="bracketclose">)</button>
+            <button type="" class="back">back</button>
+            <button type="" class="clear_all">c</button>
+            <button type="" class="plusminus">+/-</button>
+            <button type="method" class="sqrt">&#8730;</button>
+            <button type="method" class="sinh-1">sinh<sup>-1</sup></button>
+            <button type="method" class="cosh-1">cosh<sup>-1</sup></button>
+            <button type="method" class="tanh-1">tanh<sup>-1</sup></button>
+            <button type="method" class="logXbase2">log<sub>2</sub>x</button>
+            <button type="method" class="ln">ln</button>
+            <button type="method" class="log">log</button>
+            <button type="" class="number">7</button>
+            <button type="" class="number">8</button>
+            <button type="" class="number">9</button>
+            <button type="/" class="operand">/</button>
+            <button type="%" class="operand">%</button>
+            <button type="" class="pi">&#960;</button>
+            <button type="" class="e">e</button>
+            <button type="" class="fact">n!</button>
+            <button type="logxBasey" class="operand">log<sub>y</sub>x</button>
+            <button type="method" class="ex">e<sup>x</sup></button>
+            <button type="method" class="10x">10<sup>x</sup></button>
+            <button type="" class="number">4</button>
+            <button type="" class="number">5</button>
+            <button type="" class="number">6</button>
+            <button type="*" class="operand">*</button>
+            <button type="method" class="reciproc">1/x</button>
+            <button type="method" class="sin">sin</button>
+            <button type="method" class="cos">cos</button>
+            <button type="method" class="tan">tan</button>
+            <button type="^" class="operand">x<sup>y</sup></button>
+            <button type="method" class="cube">x<sup>3</sup></button>
+            <button type="method" class="sqr">x<sup>2</sup></button>
+            <button type="" class="number">1</button>
+            <button type="" class="number">2</button>
+            <button type="" class="number">3</button>
+            <button type="-" class="operand">-</button>
+            <button type="" class="operand" id="equalto">=</button>
+            <button type="method" class="sin-1">sin<sup>-1</sup></button>
+            <button type="method" class="cos-1">cos<sup>-1</sup></button>
+            <button type="method" class="tan-1">tan<sup>-1</sup></button>
+            <button type="yroot" class="operand"><sup>y</sup>&#8730;x</button>
+            <button type="method" class="cuberoot"><sup>3</sup>&#8730;</button>
+            <button type="method" class="abs">|x|</button>
+            <button type="" class="number" id="zero">0</button>
+            <button type="" class="number">.</button>
+            <button type="+" class="operand">+</button>
+            <p id="last_btn" type="" class="" style="display:none;"></p>
+            <p id="brkt"></p>
+          </div>
         </div>
-        <div style="float: right; margin-top: 10px;">
-          <button type="" class="mfn" id="mc">MC</button>
-          <button type="" class="mfn" id="mr">MR</button>
-          <button type="" class="mfn" id="ms">MS</button>
-          <button type="" class="mfn" id="mplus">M+</button>
-          <button type="" class="mfn" id="mminus">M-</button>
+        <div id="helpContent" onmousedown="return false" style="display:none;">
+          <h3 style="text-align:center;"><strong>Calculator Instructions</strong></h3>
+          Allows you to perform basic and complex mathematical operations such as modulus, square root,cube root, trigonometric,  exponential, logarithmic, hyperbolic functions, etc. 
+          <br> You can operate the calculator using the buttons provided on screen with your mouse. <br>
+          <br>
+          <h3 style=" text-decoration: underline;color: green">Do's:</h3>
+          <ul>
+            <li> Be sure to press [C] when beginning a new calculation.</li>  
+            <li> Simply an equation using parenthesis and other mathematical operators.</li>
+            <li> Use the predefined operations such as p (Pi), log, Exp to save time during calculation.</li>
+            <li> Use memory function for calculating cumulative totals.</li>
+            <strong>
+            [M+]: Will add displayed value to memory.
+            <br>
+            [MR]: Will recall the value stored in memory.
+            <br>
+            [M-]: Subtracts the displayed value from memory.
+            </strong>
+            <li> Be sure select the angle unit (Deg or Rad) before beginning any calculation.</li>
+            <strong>Note: By default angle unit is set as Degree</strong> 
+          </ul>
+          <h3><span style=" text-decoration: underline;color: red">Dont's:</span></h3>
+          <ul>
+            <li> Perform multiple operations together.</li>
+            <li> Leave parenthesis unbalanced.</li>
+            <li> Change the angle unit (Deg or Rad) while performing a calculation..</li>
+          </ul>
+          <h3><span style=" text-decoration: underline;">Limitations:</span></h3>
+          <ul>
+            <li> Keyboard operation is disabled.</li>
+            <li> The output for a Factorial calculation is precise up to 14 digits.</li>
+            <li> The output for Logarithmic and Hyperbolic calculations is precise up to 5 digits.</li>
+            <li> Modulus (mod) operation performed on decimal numbers with 15 digits would not be precise.</li>
+            <br>
+            <strong> Use mod operation only if the number comprises of less than 15 digits i.e. mod operation provides best results for smaller numbers.</strong>
+            <br>
+            <li>The range of value supported by the calculator is 10(-323) to 10(308).</li>
+          </ul>
+          <br>
+          <br>
         </div>
-        <div style="clear: both;"></div>
-        <button type="method" class="sinh">sinh</button>
-        <button type="method" class="cosh">cosh</button>
-        <button type="method" class="tanh">tanh</button>
-        <button type="exp" class="operand">Exp</button>
-        <button type="" class="bracketopen">(</button>
-        <button type="" class="bracketclose">)</button>
-        <button type="" class="back">back</button>
-        <button type="" class="clear_all">c</button>
-        <button type="" class="plusminus">+/-</button>
-        <button type="method" class="sqrt">&#8730;</button>
-        <button type="method" class="sinh-1">sinh<sup>-1</sup></button>
-        <button type="method" class="cosh-1">cosh<sup>-1</sup></button>
-        <button type="method" class="tanh-1">tanh<sup>-1</sup></button>
-        <button type="method" class="logXbase2">log<sub>2</sub>x</button>
-        <button type="method" class="ln">ln</button>
-        <button type="method" class="log">log</button>
-        <button type="" class="number">7</button>
-        <button type="" class="number">8</button>
-        <button type="" class="number">9</button>
-        <button type="/" class="operand">/</button>
-        <button type="%" class="operand">%</button>
-        <button type="" class="pi">&#960;</button>
-        <button type="" class="e">e</button>
-        <button type="" class="fact">n!</button>
-        <button type="logxBasey" class="operand">log<sub>y</sub>x</button>
-        <button type="method" class="ex">e<sup>x</sup></button>
-        <button type="method" class="10x">10<sup>x</sup></button>
-        <button type="" class="number">4</button>
-        <button type="" class="number">5</button>
-        <button type="" class="number">6</button>
-        <button type="*" class="operand">*</button>
-        <button type="method" class="reciproc">1/x</button>
-        <button type="method" class="sin">sin</button>
-        <button type="method" class="cos">cos</button>
-        <button type="method" class="tan">tan</button>
-        <button type="^" class="operand">x<sup>y</sup></button>
-        <button type="method" class="cube">x<sup>3</sup></button>
-        <button type="method" class="sqr">x<sup>2</sup></button>
-        <button type="" class="number">1</button>
-        <button type="" class="number">2</button>
-        <button type="" class="number">3</button>
-        <button type="-" class="operand">-</button>
-        <button type="" class="operand" id="equalto">=</button>
-        <button type="method" class="sin-1">sin<sup>-1</sup></button>
-        <button type="method" class="cos-1">cos<sup>-1</sup></button>
-        <button type="method" class="tan-1">tan<sup>-1</sup></button>
-        <button type="yroot" class="operand"><sup>y</sup>&#8730;x</button>
-        <button type="method" class="cuberoot"><sup>3</sup>&#8730;</button>
-        <button type="method" class="abs">|x|</button>
-        <button type="" class="number" id="zero">0</button>
-        <button type="" class="number">.</button>
-        <button type="+" class="operand">+</button>
-        <p id="last_btn" type="" class="" style="display:none;"></p>
-        <p id="brkt"></p>
       </div>
     </div>
   </body>
