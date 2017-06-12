@@ -152,7 +152,10 @@ $(document).ready(function() {
       } // clearing fields if completed, or if last button is a function
 
       if (last_btn_class == "number") {
-        document.getElementById('input2').innerHTML += $(this).html();
+        if ((last_btn_value == ".") && ($(this).html() == ".") ){
+        } else {
+          document.getElementById('input2').innerHTML += $(this).html();
+        }
       } else {
         document.getElementById('input2').innerHTML = $(this).html();        
       }
