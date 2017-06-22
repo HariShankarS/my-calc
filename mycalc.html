@@ -2,6 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <meta name="description" content="Scientific Calculator for GATE for Practice">
+    <meta name="keywords" content="Virtual Calculator,GATE calculator for practise,scientific calculator for GATE,Hari Shankar - Web Developer">
+    <meta name="author" content="Hari Shankar Srungavarapu">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
     <title>Scientific Calculator for Gate</title>
@@ -11,7 +15,7 @@
   <body>
     <div id="calculator" class="calc_container">
       <div id="help_guide">
-        <span>Scientific Calculator</span>
+        <span alt="Gate Calculator">Scientific Calculator</span>
         <div id="calculator_help" class="help_back">Help</div>
         <div style="display:none;" id="calculator_help_back" class="help_back">Back</div>
       </div>
@@ -20,6 +24,7 @@
           <div id="input1"></div>
           <div id="input2">0</div>
           <p class="capitalm" style="display: none;">M</p>
+
           <div>
             <div style="float: left;">
               <p class="memory" value="0"></p>
@@ -78,6 +83,7 @@
             <button type="" class="number">3</button>
             <button type="-" class="operand">-</button>
             <button type="" class="operand" id="equalto">=</button>
+            <button>=</button>
             <button type="method" class="sin-1">sin<sup>-1</sup></button>
             <button type="method" class="cos-1">cos<sup>-1</sup></button>
             <button type="method" class="tan-1">tan<sup>-1</sup></button>

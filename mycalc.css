@@ -8,24 +8,34 @@
 }
 button {
   padding: 3px 3px 3px 3px !important;
-  background-color: #F2F2F2;
+  background-colorf: #F2F2F2;
   border: 0.5px solid #bdbdbd;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: bold;
   margin: 1px;
   margin-bottom: 3px;
-  width: 45px !important;
+  width: 40px !important;
 }
 .back {
-  width: 96px !important;
+  width: 87px !important;
   text-align: center;
 }
 #zero {
-  width: 98px !important;
+  width: 87px !important;
   text-align: center;      
 }
+.back, .clear_all, .plusminus {
+  background-color: #F78181;  
+}
+#equalto {
+  position: absolute;
+  z-index: 20;
+  font-size: 18px;
+  background-color: #64D568;
+  height: 53px !important;
+}
 .over {
-  width: 563px;
+  width: 505px;
 }
 
 p {
@@ -42,24 +52,28 @@ p {
   height: auto; 
   bottom: auto;
 }
+.mobile {
+  transform: rotate(90deg);
+  transform-origin: 30% 50%;
+  margin-top: 20px;
+}
 .calc_container {
-  background: none repeat scroll 0 0 #dadada;
+  background: none repeat scroll 0 0 white;
   border: 1px solid #aaa;
   border-radius: 5px;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1) inset;
   padding: 0px;
-  border-bottom: 7px solid #999;
   position:relative;
 }
 #help_guide {
   margin-bottom:5px;
   padding: 10px;
-  background-color: #2E2E2E;
+  background-color: #52B1F5;
   color:#ffffff;
 }
 #calculator_help{
   color: #000;
-  background: #A4A4A4;
+  background: #58AECD;
   width: 54px;
   height: 25px;
   padding:1px;
@@ -73,13 +87,13 @@ p {
   top: 7px;    
 }
 #calculator_help:hover{
-  background: #BDBDBD;
+  background: #58AECD;
   width: 54px;
   height: 25px;
 }
 #calculator_help_back{
   color: #000;
-  background: #BDBDBD;
+  background: #58AECD;
   width: 54px;
   height: 25px;
   padding:1px;
@@ -93,7 +107,7 @@ p {
   top: 7px;   
 }
 #calculator_help_back:hover{
-  background: #A4A4A4;
+  background: #58AECD;
   width: 54px;
   height: 25px;
 }
@@ -107,6 +121,11 @@ p {
   height: 243px;
   overflow: auto;
   padding: 10px;
-  width: 560px;
+  width: 470px;
   padding-bottom: 20px;
+}
+@media print {
+    html, body {
+       display: none;  /* hide whole page */
+    }
 }
